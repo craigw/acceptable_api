@@ -1,6 +1,23 @@
 # AcceptableApi
 
-TODO: Write a gem description
+Build an acceptable API.
+
+HTTP is pretty darn awesome you guys. Part of HTTP - the `Accept` header -
+allows the clients of our API to tell us what representation they want to work
+with. We should probably pay attention to them, hey?
+
+This is expecially important when writing an API when you may need to deal with
+several versions of a representation. When a client asks for JSON we don't
+really know if they want JSON version 1 or 5 of our representation.
+
+At some point I'll clean up my thoughts on this and write something decent.
+Until then, more reading here:
+
+  http://barkingiguana.com/2011/12/05/principles-of-service-design-program-to-an-interface/
+
+If you know better than me, please mail at me and tell me what I did wrong:
+craig@barkingiguana.com.
+
 
 ## Installation
 
@@ -17,6 +34,8 @@ Or install it yourself as:
     $ gem install acceptable_api
 
 ## Usage
+
+See `example/example.rb` for an example
 
 TODO: Write usage instructions here
 
