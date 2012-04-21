@@ -1,0 +1,9 @@
+source :rubygems
+
+gem 'sinatra'
+gem 'rack'
+gem 'rack-accept-header-updater'
+gem 'rack-accept'
+gem 'rake'
+
+gem 'builder'
