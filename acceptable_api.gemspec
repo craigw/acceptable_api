@@ -14,4 +14,8 @@ Gem::Specification.new do |gem|
   gem.name          = "acceptable_api"
   gem.require_paths = ["lib"]
   gem.version       = AcceptableApi::VERSION
+  gem.add_runtime_dependency 'rack'
+  gem.add_runtime_dependency 'rack-accept'
+  gem.add_runtime_dependency 'rack-accept-header-updater'
+  gem.add_runtime_dependency 'sinatra'
 end
