@@ -66,17 +66,12 @@ used as a Rack application. In `config.ru` do this:
     run SandwichApi
 
 You can now use `rackup` as normal to launch a web server, and `curl` to access
-your API:
+your API, requesting a JSON representation of sandwich 123:
 
-    $ curl -i http://localhost:9292/sandwiches/123
+    $ curl  -H 'Accept: application/json' -i http://localhost:9292/sandwiches/123
     HTTP/1.1 406 Not Acceptable
-    X-Frame-Options: sameorigin
-    X-Xss-Protection: 1; mode=block
     Content-Type: application/javascript
     Content-Length: 21
-    Server: WEBrick/1.3.1 (Ruby/1.9.2/2011-07-09)
-    Date: Sat, 21 Apr 2012 19:57:59 GMT
-    Connection: Keep-Alive
 
     {
       "links": [
@@ -85,8 +80,8 @@ your API:
     }
 
 We got a `406 Not Acceptable` response because AcceptableApi doesn't know how to
-respond with any of the representations we'd accept. That's fair: we haven't
-told it how to respond to /any/ representations yet. Do it like this:
+respond with an `application/json` representation of a Sandwich. That's fair: we
+haven't told it how to respond to /any/ representations yet. Do it like this:
 
     AcceptableApi.register Sandwich, 'application/json' do |sandwich, request|
       JSON.generate :id => sandwich.id
@@ -94,44 +89,35 @@ told it how to respond to /any/ representations yet. Do it like this:
 
 Let's try requesting the resource again:
 
-    $ curl -i http://localhost:9293/sandwiches/123
+    $ curl -H 'Accept: application/json' -i http://localhost:9292/sandwiches/123
     HTTP/1.1 200 OK
-    X-Frame-Options: sameorigin
-    X-Xss-Protection: 1; mode=block
     Content-Type: application/json
     Content-Length: 12
-    Server: WEBrick/1.3.1 (Ruby/1.9.2/2011-07-09)
-    Date: Sat, 21 Apr 2012 20:03:14 GMT
-    Connection: Keep-Alive
 
     {"id":"123"}
 
-Ace, we got a response. What happens if we ask for a plain text response?
+Ace, we got a response, and it's the JSON represenation of the sandwich. What
+happens if we ask for a plain text representation?
 
     $ curl -H 'Accept: text/plain' -i http://localhost:9292/sandwiches/123
     HTTP/1.1 406 Not Acceptable
-    X-Frame-Options: sameorigin
-    X-Xss-Protection: 1; mode=block
     Content-Type: application/javascript
     Content-Length: 146
-    Server: WEBrick/1.3.1 (Ruby/1.9.2/2011-07-09)
-    Date: Sat, 21 Apr 2012 20:04:46 GMT
-    Connection: Keep-Alive
 
     {
       "links": [
-	{
-	  "rel": "alternative",
-	  "type": "application/json",
-	  "uri": "http://localhost:9293/sandwiches/123"
-	}
+        {
+          "rel": "alternative",
+          "type": "application/json",
+          "uri": "http://localhost:9292/sandwiches/123"
+        }
       ]
     }
 
 As expected, this is a `406 Not Acceptable` response, but we take the
 opportunity to provide a list of alternative representations that the client may
-want to check out. Our `application/json` is listed with the type and the URI to
-request should the client want to do so.
+want to check out. The `application/json` representation is listed with the type
+and the URI to request should the client want to do so.
 
 Time passes, and a we decide that our API would be more useful if it returned
 the fillings and bread used in the sandwich, and we want to replace the database
@@ -157,9 +143,22 @@ And we register the type with AcceptableApi:
 
 And we make the request:
 
-    
+    $  curl -H 'Accept: application/vnd.acme.sandwich-v1+json' -i http://localhost:9292/sandwiches/123
+    HTTP/1.1 200 OK
+    Content-Type: application/vnd.acme.sandwich-v1+json
+    Content-Length: 75
 
-See `example/example.rb` for an example.
+    {"name":"Bleaugh","fillings":["jam","avacado","anchovies"],"bread":"brown"}
+
+Making a request for the normal `application/json` representation still works:
+
+    $ curl -H 'Accept: application/json' -i http://localhost:9292/sandwiches/123HTTP/1.1 200 OK
+    Content-Type: application/json
+    Content-Length: 12
+
+    {"id":"123"}
+
+See `example/example.rb` for a working example.
 
 TODO: Write usage instructions here
 
