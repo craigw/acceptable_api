@@ -152,7 +152,8 @@ And we make the request:
 
 Making a request for the normal `application/json` representation still works:
 
-    $ curl -H 'Accept: application/json' -i http://localhost:9292/sandwiches/123HTTP/1.1 200 OK
+    $ curl -H 'Accept: application/json' -i http://localhost:9292/sandwiches/123
+    HTTP/1.1 200 OK
     Content-Type: application/json
     Content-Length: 12
 
