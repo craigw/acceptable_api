@@ -228,6 +228,9 @@ See the example directory, `example/`, for a working example.
   this clean. A controller should be able to return any of the HTTP statuses
   that makes sense, including 401 / 403.
 
+* What happens when we request an URI that's not had anything wired up to
+  it?
+
 
 ## Authors
 
