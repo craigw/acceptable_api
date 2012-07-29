@@ -1,10 +1,4 @@
 source :rubygems
 
-gem 'acceptable_api'
-gem 'sinatra'
-gem 'rack'
-gem 'rack-accept-header-updater'
-gem 'rack-accept'
-gem 'rake'
-
+gemspec :path => '../'
 gem 'builder'

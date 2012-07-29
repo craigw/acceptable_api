@@ -1,17 +1,18 @@
 module AcceptableApi
-  class Controller < Sinatra::Base
-    use Rack::AcceptHeaderUpdater
+  module Controller
+    attr_accessor :params
+    protected :params, :params=
 
-    def self.get path, &block
-      super path do
-	response = Response.new :params => params
-	resource = response.instance_eval &block
-	api = Request.new request
-	s, h, body = api.respond_with resource
-	status s
-	headers h
-	body
-      end
+    attr_accessor :action
+    protected :action, :action=
+
+    def initialize params, action
+      self.params = params
+      self.action = action
+    end
+
+    def perform_action
+      send action
     end
   end
 end

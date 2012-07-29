@@ -1,9 +1,8 @@
 module AcceptableApi
-  class MissingMapper
+  class MissingController
     include Singleton
 
-    def missing?
-      true
+    def perform_action
     end
   end
 end
